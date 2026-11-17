@@ -377,7 +377,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     <div class="phead">
       <span class="label"><b>00</b> — Kirish</span>
       <h1>Promokod bilan <span class="serif">kirish</span></h1>
-      <p>Platforma hozir yopiq test rejimida. Kirish uchun Telegram botimizdan bepul promokod oling.</p>
+      <p>Telegram botimizdan promokod oling va platformani 3 kun bepul sinab ko'ring. Keyin obuna — 47 000 so'm / oy.</p>
     </div>
     <div class="login-grid">
       <div class="panel">
@@ -742,7 +742,7 @@ async function redeem(code){
   const btn=$("#promoBtn"); btn.disabled=true; btn.style.opacity=.6;
   const j=await call("redeem",{code});
   btn.disabled=false; btn.style.opacity=1;
-  if(!j.ok){ $("#promoErr").textContent=j.error||"Xatolik"; return }
+  if(!j.ok){ $("#promoErr").textContent=j.error||"Xatolik"; if(j.expired) $("#promoErr").insertAdjacentHTML("beforeend",` <a href="https://t.me/${CFG.bot||"unlimitedyou1_bot"}" target="_blank" rel="noopener">Botga o'tish</a>`); return }
   $("#promoErr").textContent="";
   applySession(j);
   toast(`Xush kelibsiz${j.name?", "+j.name:""}!`);
@@ -976,7 +976,7 @@ async function init(){
   if(TG){
     const j=await call("tg_login",{initData:TG.initData});
     if(j.ok) applySession(j);
-    else if(j.need_promo) { $("#tgHint").style.display="block"; }
+    else if(j.need_promo) { if(j.reason==="expired") $("#tgHint").textContent=j.error; $("#tgHint").style.display="block"; }
   }
   if(!me && token){
     const j=await call("me");
