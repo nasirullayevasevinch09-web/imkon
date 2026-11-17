@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Imkon — sizga mos grantlar va imkoniyatlar</title>
+<title>Unlimited You — sizga mos grantlar va imkoniyatlar</title>
 <meta name="description" content="Sizga mos grantlar, universitetlar, konferensiyalar va dasturlar. Talablar tekshiruvi va AI hujjat feedbacki.">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,8 +29,9 @@ h1,h2,h3{font-weight:800;letter-spacing:-.04em;line-height:.95}
 /* nav */
 .nav{position:sticky;top:14px;z-index:50;margin:14px auto 0;max-width:1240px;padding:0 24px}
 .nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(255,255,255,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(20,20,20,.06);border-radius:999px;padding:10px 10px 10px 22px}
-.logo{font-weight:800;font-size:24px;letter-spacing:-.05em;display:flex;align-items:center;gap:6px;cursor:pointer;background:none;border:0}
-.logo i{width:12px;height:12px;border-radius:50%;background:var(--pur);display:inline-block;box-shadow:0 0 0 2px var(--ink)}
+.logo{font-weight:800;font-size:24px;letter-spacing:-.05em;display:flex;align-items:baseline;gap:6px;white-space:nowrap;cursor:pointer;background:none;border:0}
+.logo .serif{font-size:28px;margin-left:-2px}
+.logo i{align-self:center;width:12px;height:12px;border-radius:50%;background:var(--pur);display:inline-block;box-shadow:0 0 0 2px var(--ink)}
 .links{display:flex;gap:4px}
 .links button{background:none;border:0;padding:10px 16px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer;color:var(--mute)}
 .links button:hover{color:var(--ink)}
@@ -275,7 +276,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 
 <nav class="nav">
   <div class="nav-in">
-    <button class="logo" data-go="home">imkon<i></i></button>
+    <button class="logo" data-go="home">unlimited <span class="serif">you</span><i></i></button>
     <div class="links" id="links">
       <button data-go="home">Bosh sahifa</button>
       <button data-go="profil">Profil</button>
@@ -306,7 +307,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     <div class="hero-row">
       <div>
         <h1>Sizga mos <span class="serif">imkoniyat</span> — bitta joyda</h1>
-        <p class="lead">Profilingizni to'ldiring. Imkon sizga mos grant, universitet, konferensiya va dasturlarni topadi, qaysi talab yetishmasligini aytadi va hujjatlaringizni topshirishdan oldin tekshiradi.</p>
+        <p class="lead">Profilingizni to'ldiring. Unlimited You sizga mos grant, universitet, konferensiya va dasturlarni topadi, qaysi talab yetishmasligini aytadi va hujjatlaringizni topshirishdan oldin tekshiradi.</p>
         <div class="cta-row">
           <button class="btn" data-go="profil">Boshlash <span class="ar" data-i="arrow"></span></button>
           <button class="btn ghost" data-go="kirish">Promokod bilan kirish <span class="ar" data-i="arrow"></span></button>
@@ -380,7 +381,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
       <div class="panel">
         <h3 style="font-size:28px;margin-bottom:16px">Promokodingiz bormi?</h3>
         <form id="promoForm" class="promo-row">
-          <input id="promoIn" placeholder="IMKON-XXXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false">
+          <input id="promoIn" placeholder="UY-XXXXXX" autocomplete="off" autocapitalize="characters" spellcheck="false">
           <button class="btn" id="promoBtn" type="submit">Kirish <span class="ar" data-i="arrow"></span></button>
         </form>
         <p id="promoErr" class="err"></p>
@@ -412,6 +413,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
       <form id="pform">
         <div class="form-grid">
           <div class="field"><label>Ismingiz</label><input id="f-name" placeholder="Masalan, Aziza"></div>
+          <div class="field"><label>Fuqaroligingiz</label><select id="f-cit"></select></div>
           <div class="field"><label>Hozirgi holatingiz</label>
             <select id="f-status">
               <option value="school">Maktab / litsey / kollej o'quvchisi</option>
@@ -494,7 +496,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 <div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
 <div class="toast" id="toast"></div>
 
-<footer><div class="wrap"><span><b style="color:var(--ink)">imkon.</b> — yopiq test</span><span>Ma'lumotlar rasmiy manbalardan tekshirilgan, lekin har yili o'zgaradi. Topshirishdan oldin rasmiy saytni ko'ring.</span></div></footer>
+<footer><div class="wrap"><span><b style="color:var(--ink)">Unlimited You</b> — yopiq test</span><span>Ma'lumotlar rasmiy manbalardan tekshirilgan, lekin har yili o'zgaradi. Topshirishdan oldin rasmiy saytni ko'ring.</span></div></footer>
 
 <script>
 const ICONS={
@@ -536,6 +538,34 @@ const API = "https://wccuqbmbhkctgngcwwer.supabase.co/functions/v1/api";
 const ANON = "sb_publishable_v1ZeLkL0_H90a47vjL7Phw_6od2A-K0";
 const TG = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData ? window.Telegram.WebApp : null;
 if (TG) { try { TG.ready(); TG.expand(); } catch (e) {} }
+
+/* ================= I18N =================
+   Kalit — o'zbekcha matnning o'zi. Yangi til qo'shish: I18N.en = {"O'zbekcha matn": "English text", ...}
+   va imkoniyatlar tarjimasi bazadagi opportunities.i18n ustunida. */
+const I18N = { uz: {} };
+const LANG_NAMES = { uz: "O'zbekcha", en: "English", ru: "Русский" };
+let lang = (()=>{ try{ const l=JSON.parse(localStorage.getItem("imkon_lang")); return I18N[l]?l:"uz" }catch(e){ return "uz" } })();
+document.documentElement.lang = lang;
+function t(s, vars){
+  let out = (I18N[lang] && I18N[lang][s]) || s;
+  if (vars) for (const k in vars) out = out.split("{"+k+"}").join(vars[k]);
+  return out;
+}
+function translateDom(root){
+  if (lang === "uz" || !I18N[lang]) return;
+  const d = I18N[lang];
+  const w = document.createTreeWalker(root || document.body, NodeFilter.SHOW_TEXT);
+  let n; while ((n = w.nextNode())) { const k = n.nodeValue.trim(); if (k && d[k]) n.nodeValue = n.nodeValue.replace(k, d[k]); }
+  (root || document.body).querySelectorAll("[placeholder]").forEach(e => { const k = e.getAttribute("placeholder"); if (d[k]) e.setAttribute("placeholder", d[k]); });
+}
+function setLang(l){ if(!I18N[l]) return; try{ localStorage.setItem("imkon_lang", JSON.stringify(l)) }catch(e){} location.reload(); }
+function localize(o){
+  const tr = (o.i18n && o.i18n[lang]) || {};
+  const req = { ...(o.req || {}) };
+  if (tr.custom) req.custom = tr.custom;
+  return { ...o, ...tr, req, docs: tr.docs || o.docs };
+}
+const CITIZENSHIP = { UZ:"O'zbekiston", KZ:"Qozog'iston", KG:"Qirg'iziston", TJ:"Tojikiston", TM:"Turkmaniston", AZ:"Ozarbayjon", AF:"Afg'oniston", RU:"Rossiya", TR:"Turkiya", IN:"Hindiston", PK:"Pokiston", OTHER:"Boshqa davlat" };
 
 const TYPES = {
   grant:{n:"Grantlar",i:"grad"}, uni:{n:"Universitetlar",i:"uni"}, conf:{n:"Konferensiyalar",i:"mic"},
@@ -596,9 +626,17 @@ function persist(){
 /* ================= MATCHING ================= */
 function evaluate(o,p){
   const r=o.req||{}, out=[];
+  const cit=p.cit||"UZ";
+  if(r.citizenship?.only){
+    const ok=r.citizenship.only.includes(cit);
+    out.push({s:ok?"ok":"no",t:t("Fuqarolik: faqat {c}",{c:r.citizenship.only.map(x=>CITIZENSHIP[x]||x).join(", ")}),d:t("Sizda: {c}",{c:CITIZENSHIP[cit]||cit}),fix:false});
+  } else if(r.citizenship?.known){
+    if(r.citizenship.known.includes(cit)) out.push({s:"ok",t:t("Fuqarolik: {c} ro'yxatda bor",{c:CITIZENSHIP[cit]||cit}),d:t(r.citizenship.note||"Davlatlar ro'yxati"),fix:false});
+    else out.push({s:"unk",t:t("Fuqarolik: davlatingiz ro'yxatda bormi"),d:t(r.citizenship.note||"Davlatlar ro'yxati"),tip:t("Rasmiy saytdagi davlatlar ro'yxatini tekshiring")});
+  }
   if(r.status){
     const ok=r.status.includes(p.status);
-    out.push({s:ok?"ok":"no",t:"Ta'lim darajasi: "+r.status.map(x=>STATUS[x]).join(" yoki "),d:"Sizda: "+STATUS[p.status],fix:false});
+    out.push({s:ok?"ok":"no",t:t("Ta'lim darajasi: {s}",{s:r.status.map(x=>t(STATUS[x])).join(t(" yoki "))}),d:t("Sizda: {c}",{c:t(STATUS[p.status])}),fix:false});
   }
   if(r.gpa){
     if(!p.gpa) out.push({s:"unk",t:`GPA kamida ${r.gpa}%`,d:"Profilingizda GPA ko'rsatilmagan",tip:"Profilga GPA qo'shing"});
@@ -624,7 +662,7 @@ function evaluate(o,p){
     const ok=+p.papers>=r.papers;
     out.push({s:ok?"ok":"no",t:`Kamida ${r.papers} ta tezis yoki maqola`,d:`Sizda: ${+p.papers||0} ta`,fix:true,tip:ok?"":"Ilmiy rahbaringiz bilan tezis tayyorlang"});
   }
-  (r.custom||[]).forEach(c=>out.push({s:"unk",t:c,d:"Buni o'zingiz tekshirishingiz kerak",tip:""}));
+  (r.custom||[]).forEach(c=>out.push({s:"unk",t:c,d:t("Buni o'zingiz tekshirishingiz kerak"),tip:""}));
   const total=out.length||1, okN=out.filter(x=>x.s==="ok").length, unk=out.filter(x=>x.s==="unk").length, fails=out.filter(x=>x.s==="no");
   const score=Math.round((okN+unk*.5)/total*100);
   let bucket="emas";
@@ -659,6 +697,7 @@ function go(v){
   if(v==="tekshiruv") fillOppSelect();
   if(v==="profil") fillForm();
   if(v==="kirish") renderLogin();
+  translateDom(document.body);
   window.scrollTo({top:0,behavior:"instant"});
 }
 document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b){e.preventDefault();go(b.dataset.go)}});
@@ -727,6 +766,7 @@ function renderStats(){
 
 /* ================= PROFILE FORM ================= */
 function initForm(){
+  $("#f-cit").innerHTML=Object.entries(CITIZENSHIP).map(([k,v])=>`<option value="${k}">${t(v)}</option>`).join("");
   const ie=$("#f-ielts");for(let s=4;s<=9;s+=.5){const o=document.createElement("option");o.value=s;o.textContent=s.toFixed(1);ie.appendChild(o)}
   $("#f-types").innerHTML=Object.entries(TYPES).map(([k,v])=>`<button type="button" class="tg" data-v="${k}">${ic(v.i)} ${v.n}</button>`).join("");
   document.querySelectorAll(".toggles").forEach(g=>g.addEventListener("click",e=>{const b=e.target.closest(".tg");if(b)b.classList.toggle("on")}));
@@ -735,7 +775,7 @@ function initForm(){
     if(gpa&&gpa>scale){toast(`GPA ${scale} dan katta bo'lishi mumkin emas`);return}
     const age=+$("#f-age").value||0;
     if(age&&(age<14||age>70)){toast("Yoshni to'g'ri kiriting");return}
-    profile={name:$("#f-name").value.trim(),status:$("#f-status").value,field:$("#f-field").value.trim(),gpa:gpa||0,scale,ielts:+$("#f-ielts").value,
+    profile={name:$("#f-name").value.trim(),cit:$("#f-cit").value,status:$("#f-status").value,field:$("#f-field").value.trim(),gpa:gpa||0,scale,ielts:+$("#f-ielts").value,
       age,work:+$("#f-work").value,papers:+$("#f-papers").value||0,
       types:[...document.querySelectorAll("#f-types .tg.on")].map(b=>b.dataset.v),
       countries:[...document.querySelectorAll("#f-countries .tg.on")].map(b=>b.dataset.v)};
@@ -752,7 +792,7 @@ function fillForm(){
   if(!$("#f-countries").children.length) fillCountries();
   if(!profile){ if(me&&me.name&&!$("#f-name").value) $("#f-name").value=me.name; return }
   const p=profile;
-  $("#f-name").value=p.name||"";$("#f-status").value=p.status;$("#f-field").value=p.field||"";
+  $("#f-name").value=p.name||"";$("#f-cit").value=p.cit||"UZ";$("#f-status").value=p.status;$("#f-field").value=p.field||"";
   $("#f-gpa").value=p.gpa||"";$("#f-scale").value=p.scale;$("#f-ielts").value=p.ielts||0;
   $("#f-age").value=p.age||"";$("#f-work").value=p.work;$("#f-papers").value=p.papers||"";
   document.querySelectorAll("#f-types .tg").forEach(b=>b.classList.toggle("on",(p.types||[]).includes(b.dataset.v)));
@@ -791,6 +831,7 @@ function renderResults(){
   body.querySelectorAll(".ocard").forEach(c=>c.addEventListener("click",e=>{
     if(e.target.closest(".save")){toggleSave(c.dataset.id);return}
     openModal(c.dataset.id)}));
+  translateDom(body);
 }
 function cardHTML({o,e}){
   const col=e.bucket==="mos"?"var(--ok)":e.bucket==="deyarli"?"var(--unk)":"var(--bad)";
@@ -841,6 +882,7 @@ function openModal(id){
       <button class="btn ${saved[id]!==undefined?"ghost":"lime"}" id="msave">${saved[id]!==undefined?"Trekerdan olib tashlash":"Trekerga qo'shish"} <span class="ar">${ic(saved[id]!==undefined?"minus":"plus")}</span></button>
     </div>`;
   $("#modal").classList.add("open");
+  translateDom($("#mbox"));
   $("#mx").onclick=closeModal;
   $("#dl").onchange=()=>{const arr=[...document.querySelectorAll("#dl input:checked")].map(x=>+x.dataset.i);docsDone[id]=arr;persist();
     $("#dcount").textContent=`${arr.length}/${o.docs.length} tayyor`};
@@ -875,7 +917,7 @@ $("#c-run").onclick=async()=>{
   const btn=$("#c-run"); btn.disabled=true; btn.style.opacity=.6;
   $("#c-res").innerHTML=`<div class="res-empty"><div class="big spin" data-i="spark"></div>AI matnni "${esc(o.name)}" mezonlari bo'yicha o'qiyapti…<br><small>Odatda 15–40 soniya</small></div>`;
   hydrate($("#c-res"));
-  const j=await call("check_doc",{opp_id:o.id,text});
+  const j=await call("check_doc",{opp_id:o.id,text,lang});
   btn.disabled=false; btn.style.opacity=1;
   if(!j.ok){ $("#c-res").innerHTML=`<div class="res-empty"><div class="big">${ic("x")}</div>${esc(j.error||"Xatolik yuz berdi")}</div>`; return }
   renderCheck(j.result,j.left);
@@ -895,7 +937,8 @@ function renderCheck(R,left){
     ${(R.fixes||[]).length?`<div class="msec"><h4>${ic("pen")} Tuzatish kerak</h4><ul class="fb fix">${R.fixes.map(f=>`<li><b>${esc(f.issue||"")}</b>${f.quote?`<q>${esc(f.quote)}</q>`:""}${f.suggestion?`<span class="sug">${ic("arrow")} ${esc(f.suggestion)}</span>`:""}</li>`).join("")}</ul></div>`:""}
     ${(R.technical||[]).length?`<div class="msec"><h4>${ic("ruler")} Texnik talablar</h4><ul class="fb tech">${R.technical.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></div>`:""}
     ${R.next_step?`<div class="msec" style="background:var(--ink);color:#fff"><h4 style="color:var(--lime)">${ic("arrow")} Keyingi qadam</h4><p>${esc(R.next_step)}</p></div>`:""}
-    <p class="note" style="margin-top:14px">Bu AI tavsiyasi, yakuniy baho emas.${left!==undefined?` Bugun yana ${left} ta tekshiruv qoldi.`:""}</p>`;
+    <p class="note" style="margin-top:14px">${t("Bu AI tavsiyasi, yakuniy baho emas.")}${left!==undefined?" "+t("Bugun yana {n} ta tekshiruv qoldi.",{n:left}):""}</p>`;
+  translateDom($("#c-res"));
 }
 
 /* ================= TRACKER ================= */
@@ -916,6 +959,7 @@ function renderBoard(){
     else if(rm){delete saved[rm.dataset.rm];persist();renderBoard();toast("Olib tashlandi")}
     else if(op) openModal(op.dataset.open);
   };
+  translateDom(w);
 }
 
 /* ================= INIT ================= */
@@ -925,7 +969,7 @@ async function init(){
   $("#promoForm").onsubmit=e=>{e.preventDefault();redeem($("#promoIn").value)};
   const [cfg,opps]=await Promise.all([call("config"),call("opps")]);
   if(cfg.ok) CFG=cfg;
-  if(opps.ok) OPPS=opps.opps;
+  if(opps.ok) OPPS=opps.opps.map(localize);
   renderStats();
   if(TG){
     const j=await call("tg_login",{initData:TG.initData});
