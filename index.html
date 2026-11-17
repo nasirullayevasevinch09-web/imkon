@@ -33,7 +33,7 @@ h1,h2,h3{font-weight:800;letter-spacing:-.04em;line-height:.95}
 .logo .serif{font-size:28px;margin-left:-2px}
 .logo i{align-self:center;width:12px;height:12px;border-radius:50%;background:var(--pur);display:inline-block;box-shadow:0 0 0 2px var(--ink)}
 .links{display:flex;gap:4px}
-.links button{background:none;border:0;padding:10px 16px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer;color:var(--mute)}
+.links button{white-space:nowrap;background:none;border:0;padding:10px 16px;border-radius:999px;font-weight:600;font-size:15px;cursor:pointer;color:var(--mute)}
 .links button:hover{color:var(--ink)}
 .links button.on{background:var(--ink);color:#fff}
 .burger{display:none;background:var(--ink);color:#fff;border:0;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px}
@@ -252,6 +252,8 @@ svg.i{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke
 .spin{animation:spin 1.6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media (max-width:1000px){.login-grid{grid-template-columns:1fr}}
+@media (max-width:1180px){.access{display:none}.links button{padding:10px 11px;font-size:14px}}
+@media (max-width:900px){.links{display:none}.burger{display:block}.nav-in .btn{display:none}}
 @media (max-width:760px){.access{display:none}}
 footer{padding:40px 0 60px;color:var(--mute);font-size:14px}
 footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:24px}
