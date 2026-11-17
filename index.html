@@ -722,7 +722,7 @@ function applySession(j){
 function logout(expired){
   token=null; me=null; store.del("token");
   renderAccess();
-  if(expired) toast("Sessiya tugadi. Promokodni qayta kiriting.");
+  if(expired) toast("Sessiya tugadi yoki hisobingizga boshqa qurilmadan kirildi. Promokodni qayta kiriting.");
   go("kirish");
 }
 function renderAccess(){
