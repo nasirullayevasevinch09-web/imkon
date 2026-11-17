@@ -745,6 +745,7 @@ async function redeem(code){
   if(!j.ok){ $("#promoErr").textContent=j.error||"Xatolik"; if(j.expired) $("#promoErr").insertAdjacentHTML("beforeend",` <a href="https://t.me/${CFG.bot||"unlimitedyou1_bot"}" target="_blank" rel="noopener">Botga o'tish</a>`); return }
   $("#promoErr").textContent="";
   applySession(j);
+  const m=await call("me"); if(m.ok) applySession(m);
   toast(`Xush kelibsiz${j.name?", "+j.name:""}!`);
   let next=null; try{next=sessionStorage.getItem("imkon_next"); sessionStorage.removeItem("imkon_next")}catch(e){}
   go(profile?(next||"imkoniyatlar"):"profil");
