@@ -473,7 +473,9 @@ function viewResources(v,d){
   const cats={}; d.resources.forEach(r=>{(cats[r.category]=cats[r.category]||[]).push(r)});
   v.innerHTML=`<div class="top"><div><p class="kick">Resurslar</p><h2>Foydali <span class="script">saytlar</span></h2><p class="muted" style="margin-top:6px">Darslarga aloqador rasmiy saytlar va vositalar</p></div></div>
   ${Object.keys(cats).length?Object.entries(cats).map(([c,rs])=>`<h3 style="margin:26px 0 12px;font-size:22px">${esc(c)}</h3>
-    <div class="grid g2">${rs.map(r=>`<a class="card res" href="${safeUrl(r.url)}" target="_blank" rel="noopener"><div class="ic">${ic("link")}</div><div><p style="font-weight:700">${esc(r.title)}</p>${r.note?`<p class="muted" style="font-size:14px">${esc(r.note)}</p>`:""}${r.lesson_num?`<span class="tag" style="margin-top:8px">${r.lesson_num}-dars</span>`:""}</div></a>`).join("")}</div>`).join(""):`<p class="muted">Resurslar tez orada qo'shiladi.</p>`}`;
+    <div class="grid g2">${rs.map(r=>r.locked
+      ?`<div class="card res" style="opacity:.5;cursor:default"><div class="ic" style="color:var(--muted)">${ic("lock")}</div><div><p style="font-weight:700">${esc(r.title)}</p><p class="muted" style="font-size:14px">${r.lesson_num}-dars ochilganda ochiladi</p></div></div>`
+      :`<a class="card res" href="${safeUrl(r.url)}" target="_blank" rel="noopener"><div class="ic">${ic("link")}</div><div><p style="font-weight:700">${esc(r.title)}</p>${r.note?`<p class="muted" style="font-size:14px">${esc(r.note)}</p>`:""}${r.lesson_num?`<span class="tag" style="margin-top:8px">${r.lesson_num}-dars</span>`:""}</div></a>`).join("")}</div>`).join(""):`<p class="muted">Resurslar tez orada qo'shiladi.</p>`}`;
 }
 
 // ===== ADMIN =====
