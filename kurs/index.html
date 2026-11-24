@@ -152,6 +152,7 @@ td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
 .task-h{display:flex;gap:12px;align-items:flex-start}.task-h p{flex:1;font-weight:600}
 .tnum{flex:none;width:30px;height:30px;border-radius:50%;background:var(--pink,#FF5FA2);color:#16141A;display:grid;place-items:center;font-weight:800}
 .tst{flex:none;font-size:13px;color:var(--muted,#9a93a6);display:inline-flex;gap:4px;align-items:center;white-space:nowrap}
+.aibar{margin-top:12px;padding:10px 14px;border-radius:12px;background:var(--lime2);color:var(--lime);font-size:14px;font-weight:600;display:flex;gap:8px;align-items:center}.aibar.warn{background:var(--pink2);color:var(--pink)}
 .crit{margin-top:10px;padding:10px 12px;border-radius:12px;background:var(--lime2);font-size:14px;line-height:1.5}.crit p+p{margin-top:4px}.crit b{color:var(--lime)}
 .tres{white-space:normal;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}.tres:first-child{border-top:0;padding-top:0}
 .tfb,.tex{margin-top:8px;padding:10px 12px;border-radius:12px;font-size:14px}.tfb{background:var(--pink2)}.tex{background:var(--bg2);border:1px dashed var(--line)}
@@ -476,6 +477,7 @@ function openLesson(id){
         out.push({n:t.n,text:document.getElementById("tx_"+t.n).value,link:document.getElementById("lk_"+t.n).value,file_url:url,file_name:name});
       }
       const r=await rpc("course_submit_tasks",{p_token:S.token,p_lesson_id:l.id,p_tasks:out});
+      try{sb.functions.invoke("course-ai-check",{body:{student_token:S.token,lesson_id:l.id}}).catch(()=>{})}catch(_){}
       toast(`Yuborildi: ${r.done}/${tasks.length} vazifa`+(r.on_time?" · o'z vaqtida +2 ball":"")); await refresh();
     }catch(e){er.textContent=(e.message==="UPLOAD")?"Faylni yuklab bo'lmadi. Turi va hajmini tekshiring.":errText(e);b.disabled=false;b.innerHTML=ic("send")+" Yuborish"}
   };
@@ -560,14 +562,16 @@ function aSubs(v,d){
       <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><h3>${esc(s.student)}</h3><p class="muted" style="font-size:14px">${s.lesson_num}-dars · ${esc(s.lesson_title)} · ${fmtDate(s.submitted_at)} ${s.on_time?"· o'z vaqtida":"· kechikkan"}</p></div>${s.status==="tekshirildi"?`<span class="tag ok">${s.points}/${s.max_points}</span>`:s.status==="qayta"?`<span class="tag re">Qayta</span>`:`<span class="tag wait">Yangi</span>`}</div>
       ${(s.tasks||[]).length?`<div class="hw">${subView(s,parseTasks((d.lessons.find(x=>x.id===s.lesson_id)||{}).homework))}<p class="muted" style="font-size:13px;margin-top:10px">${s.tasks.length}/${parseTasks((d.lessons.find(x=>x.id===s.lesson_id)||{}).homework).length} vazifa yuklangan</p></div>`:`${s.answer?`<div class="hw">${esc(s.answer)}</div>`:""}
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">${s.link?`<a class="btn ghost sm" href="${safeUrl(s.link)}" target="_blank" rel="noopener">${ic("link",16)} Havola</a>`:""}${s.file_url?`<a class="btn ghost sm" href="${safeUrl(s.file_url)}" target="_blank" rel="noopener">${ic("file",16)} ${esc(s.file_name||"Fayl")}</a>`:""}</div>`}
-      ${(()=>{const L=d.lessons.find(x=>x.id===s.lesson_id)||{},C=L.criteria||{},tf=s.task_feedback||{};return `<div style="margin-top:14px">${parseTasks(L.homework).map(t=>{const c=C[t.n]||{},f=tf[t.n]||{};return `<div class="task" style="margin-top:10px">
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="tnum">${t.n}</span><select data-tp="${s.id}" data-n="${t.n}" style="width:auto;padding:8px 12px">${["","2","1","0"].map(o=>`<option value="${o}" ${String((s.task_points||{})[t.n]??"")===o?"selected":""}>${o===""?"Ball —":o+" ball"}</option>`).join("")}</select><span class="muted" style="font-size:13px;flex:1">${esc(t.text)}</span></div>
+      ${(()=>{const L=d.lessons.find(x=>x.id===s.lesson_id)||{},C=L.criteria||{},useAI=s.status!=="tekshirildi"&&!Object.keys(s.task_points||{}).length&&s.ai_status==="tayyor",TP=useAI?(s.ai_task_points||{}):(s.task_points||{}),tf=useAI?(s.ai_task_feedback||{}):(s.task_feedback||{});const ab=({tayyor:useAI?`<div class="aibar">${ic("check",16)} AI qoralamasi tayyor — ball, izoh va namunani tekshirib, “Tasdiqlash”ni bosing. O'quvchiga faqat tasdiqlangandan keyin boradi.</div>`:"",tekshirilmoqda:`<div class="aibar">AI tekshirmoqda… sahifani 1 daqiqadan keyin yangilang.</div>`,kalit_yoq:`<div class="aibar warn">AI kaliti hali ulanmagan — Supabase'ga ANTHROPIC_API_KEY qo'shilgach ishlaydi.</div>`,xato:`<div class="aibar warn">AI tekshira olmadi. “AI bilan tekshirish”ni qayta bosing yoki qo'lda baholang.</div>`})[s.ai_status]||"";
+      const tot=Object.values(TP).reduce((a,b)=>a+(+b||0),0);
+      return `${ab}<div style="margin-top:14px">${parseTasks(L.homework).map(t=>{const c=C[t.n]||{},f=tf[t.n]||{};return `<div class="task" style="margin-top:10px">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="tnum">${t.n}</span><select data-tp="${s.id}" data-n="${t.n}" style="width:auto;padding:8px 12px">${["","2","1","0"].map(o=>`<option value="${o}" ${String(TP[t.n]??"")===o?"selected":""}>${o===""?"Ball —":o+" ball"}</option>`).join("")}</select><span class="muted" style="font-size:13px;flex:1">${esc(t.text)}</span></div>
         ${c.c2?`<div class="crit"><p><b>2 ball:</b> ${esc(c.c2)}</p>${c.c1?`<p><b>1 ball:</b> ${esc(c.c1)}</p>`:""}</div>`:""}
         <label>Izoh (rivojlanish uchun)</label><textarea data-fb="${s.id}" data-n="${t.n}" style="min-height:70px">${esc(f.fb||"")}</textarea>
         <label>Namuna / misol</label><textarea data-ex="${s.id}" data-n="${t.n}" style="min-height:60px">${esc(f.ex||"")}</textarea>
-      </div>`}).join("")}<p style="margin-top:12px;font-weight:700" id="tot_${s.id}">Jami: ${s.points??0}/${s.max_points}</p>
+      </div>`}).join("")}<p style="margin-top:12px;font-weight:700" id="tot_${s.id}">Jami: ${tot}/${s.max_points}</p>
       <label>Umumiy izoh (ixtiyoriy)</label><textarea id="f_${s.id}" style="min-height:60px">${esc(s.feedback||"")}</textarea></div>`})()}
-      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap"><button class="btn lime sm" data-g="${s.id}">${ic("check",16)} Baholash</button><button class="btn ghost sm" data-r="${s.id}">Qayta topshirishni so'rash</button></div>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap"><button class="btn lime sm" data-g="${s.id}">${ic("check",16)} Tasdiqlash va yuborish</button>${s.status!=="tekshirildi"?`<button class="btn ghost sm" data-ai="${s.id}">AI bilan tekshirish</button>`:""}<button class="btn ghost sm" data-r="${s.id}">Qayta topshirishni so'rash</button></div>
     </div>`).join(""):`<p class="muted">Bu bo'limda vazifa yo'q.</p>`}</div>`;
   v.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{A.filter=b.dataset.f;renderAdmin()});
   const tpOf=id=>{const o={};v.querySelectorAll(`[data-tp="${id}"]`).forEach(x=>{if(x.value!=="")o[x.dataset.n]=parseInt(x.value,10)});return o};
@@ -577,6 +581,7 @@ function aSubs(v,d){
     if(x.value!==""&&x.value!=="2"&&ex.value.trim()==="")ex.value=c.ex||"";});
   const tfOf=id=>{const o={};v.querySelectorAll(`[data-fb="${id}"]`).forEach(x=>{const n=x.dataset.n,ex=v.querySelector(`[data-ex="${id}"][data-n="${n}"]`).value;if(x.value.trim()||ex.trim())o[n]={fb:x.value,ex}});return o};
   v.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{const id=b.dataset.g;adminCall("course_admin_grade_tasks",{p_sub_id:id,p_task_points:tpOf(id),p_feedback:document.getElementById("f_"+id).value,p_task_feedback:tfOf(id)},"Baholandi — o'quvchiga izoh va namuna yuborildi")});
+  v.querySelectorAll("[data-ai]").forEach(b=>b.onclick=async()=>{b.disabled=true;b.textContent="AI tekshirmoqda…";try{const {data,error}=await sb.functions.invoke("course-ai-check",{body:{admin_token:A.token,sub_id:b.dataset.ai}});if(error)throw error;if(data&&data.error==="NO_KEY")toast("AI kaliti hali ulanmagan");else if(data&&data.error)toast("AI xatosi: "+(data.detail||data.error));else toast("AI qoralamasi tayyor");}catch(e){toast("AI bilan bog'lanib bo'lmadi")}await adminReload()});
   v.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{const id=b.dataset.r;adminCall("course_admin_grade",{p_sub_id:id,p_points:null,p_feedback:document.getElementById("f_"+id).value,p_status:"qayta"},"Qayta topshirish so'raldi")});
 }
 
